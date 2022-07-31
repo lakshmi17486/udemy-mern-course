@@ -21,8 +21,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Your routes have to be imported prior to loading the static assets.
+//require('.../authRoutes') returns a function , which will be called with paramter app
+require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
+
+
 if (process.env.NODE_ENV === 'production') {
-  // Express will serve production assets like main.js ,main.css
+  // Express will serve production static assets like main.js ,main.css
   app.use(express.static('client/build'));
 
 
@@ -34,11 +40,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const PORT = process.env.PORT || 5000;
-
-//require('.../authRoutes') returns a function , which will be called with paramter app
-require('./routes/authRoutes')(app);
-require('./routes/billingRoutes')(app);
-
 
 app.listen(PORT,()=>{
     console.log('Server starts running!')
